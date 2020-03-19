@@ -20,7 +20,7 @@ package com.jvm.classloader;
  * ldc表示将int，float或是String类型的常量值从常量池中推送至栈顶
  * bipush表示将单字节（-128~127）的常量值推送至栈顶
  * sipush表示将一个短整型常量值（-32768~32767）推送至栈顶
- * iconst_1表示将int类型的数字1推送至栈顶 (iconst_1~iconst_5 jvm认为1-5比较常用)
+ * iconst_1表示将int类型的数字1推送至栈顶 (iconst_m1~iconst_5 jvm认为-1-5比较常用)
  */
 public class MyTest2 {
 
