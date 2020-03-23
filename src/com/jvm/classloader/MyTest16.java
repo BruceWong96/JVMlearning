@@ -76,7 +76,7 @@ public class MyTest16 extends ClassLoader {
 
 
 
-    public static void main(String[] args) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public static void main(String[] args) throws Exception {
         MyTest16 loader1 = new MyTest16("loader1");
 
 //        loader1.setPath("H://IDEA_workspace/JVMlearning/out/production/JVMlearning/");
@@ -89,13 +89,30 @@ public class MyTest16 extends ClassLoader {
 
         System.out.println("------------------------------");
 
-        MyTest16 loader2 = new MyTest16(loader1,"loader2");
-        loader2.setPath("C://Users/Ferdinand Wang/Desktop/code_test/");
-        Class<?> clazz2 = loader2.loadClass("com.jvm.classloader.MyTest1");
+        loader1 = null;
+        clazz = null;
+        object = null;
 
-        System.out.println("class: " + clazz2.hashCode());
-        Object object2 = clazz2.newInstance();
-        System.out.println(object2);
+        System.gc();
+
+        Thread.sleep(20000);
+
+        loader1 = new MyTest16("loader1");
+        loader1.setPath("C://Users/Ferdinand Wang/Desktop/code_test/");
+        clazz = loader1.loadClass("com.jvm.classloader.MyTest1");
+        System.out.println("class: " + clazz.hashCode());
+
+         object = clazz.newInstance();
+        System.out.println(object);
+
+
+//        MyTest16 loader2 = new MyTest16(loader1,"loader2");
+//        loader2.setPath("C://Users/Ferdinand Wang/Desktop/code_test/");
+//        Class<?> clazz2 = loader2.loadClass("com.jvm.classloader.MyTest1");
+//
+//        System.out.println("class: " + clazz2.hashCode());
+//        Object object2 = clazz2.newInstance();
+//        System.out.println(object2);
 
         System.out.println();
     }
