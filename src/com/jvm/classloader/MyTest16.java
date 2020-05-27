@@ -75,11 +75,10 @@ public class MyTest16 extends ClassLoader {
     }
 
 
-
     public static void main(String[] args) throws Exception {
         MyTest16 loader1 = new MyTest16("loader1");
 
-//        loader1.setPath("H://IDEA_workspace/JVMlearning/out/production/JVMlearning/");
+//      loader1.setPath("H://IDEA_workspace/JVMlearning/out/production/JVMlearning/");
 //C://Users/Ferdinand Wang/Desktop
         loader1.setPath("C://Users/Ferdinand Wang/Desktop/code_test/");
         Class<?> clazz = loader1.loadClass("com.jvm.classloader.MyTest1");
@@ -116,6 +115,4 @@ public class MyTest16 extends ClassLoader {
 
         System.out.println();
     }
-
-
 }
