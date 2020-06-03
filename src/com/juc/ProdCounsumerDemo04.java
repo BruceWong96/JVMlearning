@@ -1,5 +1,6 @@
 package com.juc;
 
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -13,8 +14,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * 3.防止线程的虚拟唤醒,只要有wait需要用while判断
  *
  * wait()判断的时候用while 不要用 if(官方文档)
- *
- *
  *
  */
 public class ProdCounsumerDemo04 {
@@ -33,7 +32,7 @@ public class ProdCounsumerDemo04 {
             }
         }, "A").start();
 
-/*        new Thread(() -> {
+        new Thread(() -> {
             for (int i = 0; i < 100; i++) {
                 try {
                     aircondition.decrement();
@@ -41,7 +40,7 @@ public class ProdCounsumerDemo04 {
                     e.printStackTrace();
                 }
             }
-        }, "B").start();*/
+        }, "B").start();
 
         new Thread(() -> {
             for (int i = 0; i < 100; i++) {
@@ -53,7 +52,7 @@ public class ProdCounsumerDemo04 {
             }
         }, "C").start();
 
-/*        new Thread(() -> {
+        new Thread(() -> {
             for (int i = 0; i < 100; i++) {
                 try {
                     aircondition.decrement();
@@ -61,7 +60,8 @@ public class ProdCounsumerDemo04 {
                     e.printStackTrace();
                 }
             }
-        }, "D").start();*/
+        }, "D").start();
+
     }
 }
 
@@ -98,31 +98,50 @@ class Aircondition {
 
     //可重入非公平的递归锁
     private final Lock lock = new ReentrantLock();
+    private Condition condition = lock.newCondition();
 
     public void increment() throws Exception {
         lock.lock();
         try{
             //1.判断
             while (number != 0) {
-                this.wait();
+                condition.await();
+//                this.wait();
             }
 
             //2.干活
             number++;
             System.out.println(Thread.currentThread().getName() + "\t" +  number);
             //3.通知
-
+            condition.signalAll();
         }catch (Exception e) {
             e.printStackTrace();
         }finally {
             lock.unlock();
         }
 
-
-
-
     }
 
+    public void decrement() throws Exception {
+        lock.lock();
+        try{
+            //1.判断
+            while (number == 0) {
+                condition.await();
+//                this.wait();
+            }
 
+            //2.干活
+            number--;
+            System.out.println(Thread.currentThread().getName() + "\t" +  number);
+            //3.通知
+            condition.signalAll();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            lock.unlock();
+        }
+
+    }
 
 }
